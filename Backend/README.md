@@ -123,3 +123,91 @@ curl -X POST http://localhost:4000/user/login \
     "password": "password123"
 }'
 ```
+
+## User Profile Endpoint
+
+### GET /user/profile
+
+Retrieve the authenticated user's profile.
+
+#### Headers
+
+- `Authorization`: Bearer token
+
+#### Response Status Codes
+
+- `200`: User profile retrieved successfully
+- `401`: Unauthorized (Invalid or missing token)
+- `500`: Internal server error
+
+#### Success Response
+
+```json
+{
+  "status": "success",
+  "user": {
+    "fullname": {
+      "firstname": "John",
+      "lastname": "Doe"
+    },
+    "email": "john@example.com"
+  }
+}
+```
+
+#### Error Response
+
+```json
+{
+  "status": "error",
+  "message": "Error description"
+}
+```
+
+#### Example Usage
+
+```bash
+curl -X GET http://localhost:4000/user/profile \
+-H "Authorization: Bearer jwt_token"
+```
+
+## User Logout Endpoint
+
+### GET /user/logout
+
+Log out the authenticated user.
+
+#### Headers
+
+- `Authorization`: Bearer token
+
+#### Response Status Codes
+
+- `200`: User logged out successfully
+- `401`: Unauthorized (Invalid or missing token)
+- `500`: Internal server error
+
+#### Success Response
+
+```json
+{
+  "status": "success",
+  "message": "Logged out successfully"
+}
+```
+
+#### Error Response
+
+```json
+{
+  "status": "error",
+  "message": "Error description"
+}
+```
+
+#### Example Usage
+
+```bash
+curl -X GET http://localhost:4000/user/logout \
+-H "Authorization: Bearer jwt_token"
+```
