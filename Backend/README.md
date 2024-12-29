@@ -1,213 +1,101 @@
-# API Documentation
+# Backend API Documentation
 
-## User Registration Endpoint
+## `/users/register` Endpoint
 
-### POST /user/register
+### Description
 
-Register a new user in the system.
+Registers a new user by creating a user account with the provided information.
 
-#### Request Body
+### HTTP Method
 
-```json
-{
-  "fullname": {
-    "firstname": "string",
-    "lastname": "string"
-  },
-  "email": "string",
-  "password": "string"
-}
-```
+`POST`
 
-#### Required Fields
+### Request Body
 
-- `fullname.firstname`: User's first name (minimum 3 characters)
-- `fullname.lastname`: User's last name (optional, minimum 3 characters if provided)
-- `email`: Valid email address
-- `password`: Password (minimum 6 characters)
+The request body should be in JSON format and include the following fields:
 
-#### Response Status Codes
+- `fullname` (object):
+  - `firstname` (string, required): User's first name (minimum 3 characters).
+  - `lastname` (string, optional): User's last name (minimum 3 characters).
+- `email` (string, required): User's email address (must be a valid email).
+- `password` (string, required): User's password (minimum 6 characters).
 
-- `201`: User successfully created
-- `400`: Bad request (Invalid input data)
-- `409`: Conflict (Email already exists)
-- `500`: Internal server error
+### Example Response
 
-#### Success Response
+- `user` (object):
+  - `fullname` (object).
+    - `firstname` (string): User's first name (minimum 3 characters).
+    - `lastname` (string): User's last name (minimum 3 characters).   
+  - `email` (string): User's email address (must be a valid email).
+  - `password` (string): User's password (minimum 6 characters).
+- `token` (String): JWT Token
 
-```json
-{
-  "status": "success",
-  "message": "User registered successfully"
-}
-```
+## `/users/login` Endpoint
 
-#### Error Response
+### Description
 
-```json
-{
-  "status": "error",
-  "message": "Error description"
-}
-```
+Authenticates a user using their email and password, returning a JWT token upon successful login.
 
-#### Example Usage
+### HTTP Method
 
-```bash
-curl -X POST http://localhost:4000/user/register \
--H "Content-Type: application/json" \
--d '{
-    "fullname": {
-        "firstname": "John",
-        "lastname": "Doe"
-    },
-    "email": "john@example.com",
-    "password": "password123"
-}'
-```
+`POST`
 
-## User Login Endpoint
+### Endpoint
 
-### POST /user/login
+`/users/login`
 
-Authenticate a user and return a token.
+### Request Body
 
-#### Request Body
+The request body should be in JSON format and include the following fields:
 
-```json
-{
-  "email": "string",
-  "password": "string"
-}
-```
+- `email` (string, required): User's email address (must be a valid email).
+- `password` (string, required): User's password (minimum 6 characters).
 
-#### Required Fields
+### Example Response
 
-- `email`: Valid email address
-- `password`: Password (minimum 6 characters)
+- `user` (object):
+  - `fullname` (object).
+    - `firstname` (string): User's first name (minimum 3 characters).
+    - `lastname` (string): User's last name (minimum 3 characters).   
+  - `email` (string): User's email address (must be a valid email).
+  - `password` (string): User's password (minimum 6 characters).
+- `token` (String): JWT Token
 
-#### Response Status Codes
+## `/users/profile` Endpoint
 
-- `200`: User successfully authenticated
-- `400`: Bad request (Invalid input data)
-- `401`: Unauthorized (Invalid credentials)
-- `404`: Not found (User not found)
-- `500`: Internal server error
+### Description
 
-#### Success Response
+Retrieves the profile information of the currently authenticated user.
 
-```json
-{
-  "status": "success",
-  "message": "User authenticated successfully",
-  "token": "jwt_token"
-}
-```
+### HTTP Method
 
-#### Error Response
+`GET`
 
-```json
-{
-  "status": "error",
-  "message": "Error description"
-}
-```
+### Authentication
 
-#### Example Usage
+Requires a valid JWT token in the Authorization header:
+`Authorization: Bearer <token>`
 
-```bash
-curl -X POST http://localhost:4000/user/login \
--H "Content-Type: application/json" \
--d '{
-    "email": "john@example.com",
-    "password": "password123"
-}'
-```
+### Example Response
 
-## User Profile Endpoint
+- `user` (object):
+  - `fullname` (object).
+    - `firstname` (string): User's first name (minimum 3 characters).
+    - `lastname` (string): User's last name (minimum 3 characters).   
+  - `email` (string): User's email address (must be a valid email).
 
-### GET /user/profile
 
-Retrieve the authenticated user's profile.
 
-#### Headers
+## `/users/logout` Endpoint
 
-- `Authorization`: Bearer token
+### Description
 
-#### Response Status Codes
+Logout the current user and blacklist the token provided in cookie or headers
 
-- `200`: User profile retrieved successfully
-- `401`: Unauthorized (Invalid or missing token)
-- `500`: Internal server error
+### HTTP Method
 
-#### Success Response
+`GET`
 
-```json
-{
-  "status": "success",
-  "user": {
-    "fullname": {
-      "firstname": "John",
-      "lastname": "Doe"
-    },
-    "email": "john@example.com"
-  }
-}
-```
+### Authentication
 
-#### Error Response
-
-```json
-{
-  "status": "error",
-  "message": "Error description"
-}
-```
-
-#### Example Usage
-
-```bash
-curl -X GET http://localhost:4000/user/profile \
--H "Authorization: Bearer jwt_token"
-```
-
-## User Logout Endpoint
-
-### GET /user/logout
-
-Log out the authenticated user.
-
-#### Headers
-
-- `Authorization`: Bearer token
-
-#### Response Status Codes
-
-- `200`: User logged out successfully
-- `401`: Unauthorized (Invalid or missing token)
-- `500`: Internal server error
-
-#### Success Response
-
-```json
-{
-  "status": "success",
-  "message": "Logged out successfully"
-}
-```
-
-#### Error Response
-
-```json
-{
-  "status": "error",
-  "message": "Error description"
-}
-```
-
-#### Example Usage
-
-```bash
-curl -X GET http://localhost:4000/user/logout \
--H "Authorization: Bearer jwt_token"
-```
+Requires a valid JWT token in the Authorization header or cookie:
