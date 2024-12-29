@@ -1,6 +1,8 @@
-const { jwt } = require("jsonwebtoken");
+const jwt = require("jsonwebtoken");
 const bcrypt = require('bcrypt');
+const JWT_SECRET = "uber-secret";
 const { default: mongoose } = require("mongoose");
+
 
 const userSchema = new mongoose.Schema({
     fullname: {
