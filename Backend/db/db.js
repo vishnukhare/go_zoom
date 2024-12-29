@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');// 
+const mongoose = require('mongoose');
 const uri = "mongodb+srv://new:abcd@uber.pnr85.mongodb.net/myDatabase?retryWrites=true&w=majority&appName=uber";
 const clientOptions = { serverApi: { version: '1', strict: true, deprecationErrors: true } };
 

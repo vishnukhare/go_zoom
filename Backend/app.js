@@ -12,12 +12,12 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
-app.use('/api/users',userRouter);
 
 app.get('/',(req,res)=>{
     res.send('Hello World');
 });
 
+app.use('/api/users',userRouter);
 
 
 

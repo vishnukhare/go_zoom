@@ -1,9 +1,6 @@
-const userModel = require("../models/user_model");
-// const { use } = require("../routes/user.routes");
-const userService = require("../services/user.service");
-const { validationResult } = require("express-validator");
-
-
+const userModel = require('../models/user.model');
+const userService = require('../services/user.service');
+const { validationResult } = require('express-validator');
 
 module.exports.registerUser = async (req, res, next) => {
 
@@ -11,30 +8,37 @@ module.exports.registerUser = async (req, res, next) => {
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
     }
-    const { firstname, lastname } = req.body.fullname;
-    const { email, password } = req.body;
 
+    const { fullname, email, password } = req.body;
 
+    // try {
+    //     const hashedPassword = await userModel.hashPassword(password);
 
-    try {
-        const hashPassword = await userService.hashPassword(password);
-        const user = await userService.createUser(firstname, lastname, email, hashPassword);
-        const token = user.generateAuthToken();
-        res.status(201).json(user,token);
-    } catch (error) {
-        next(error);
-    }
+    //     const user = await userService.createUser({
+    //         firstname: fullname.firstname,
+    //         lastname: fullname.lastname,
+    //         email,
+    //         password: hashedPassword
+    //     });
 
-    // const hashPassword = await userService.hashPassword(password);
+    //     const token = user.generateAuthToken();
 
-    // const user = await userService.createUser({
-    //     firstname: fullname.firstname,
-    //     lastname: fullname.lastname,
-    //     lastname, 
-    //     email, 
-    //     password: hashPassword
-    // });
-    // const token = user.generateAuthToken();
+    //     res.status(201).json({ token, user });
+    // } catch (error) {
+    //     console.error("Error in registerUser:", error.message);
+    //     next(error);
+    // }
 
-    // res.status(201).json({ data: user, token });
-};
+    const hashedPassword = await userModel.hashPassword(password);
+
+    const user = await userService.createUser({
+        firstname: fullname.firstname,
+        lastname: fullname.lastname,
+        email,
+        password: hashedPassword
+    });
+
+    const token = user.generateAuthToken();
+
+    res.status(201).json({ token, user });
+}
