@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-const JWT_SECRET = 'uber-secret';
 
 const captainSchema = new mongoose.Schema({
     fullname: {
@@ -71,7 +70,7 @@ const captainSchema = new mongoose.Schema({
 })
 
 captainSchema.methods.generateAuthToken = function () {
-    const token = jwt.sign({ _id: this._id }, process.env.JWT_SECRET, { expiresIn: '24h' });
+    const token = jwt.sign({ _id: this._id }, "uber-secret", { expiresIn: '24h' });
     return token;
 }
 

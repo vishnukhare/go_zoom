@@ -20,8 +20,8 @@ app.get('/',(req,res)=>{
     res.send('Hello World');
 });
 
-app.use('/api/users',userRouter);
-app.use('/api/captains',captainRouter);
+app.use('/users',userRouter);
+app.use('/captains',captainRouter);
 
 
 
